@@ -20,7 +20,7 @@ The report contains three pages:
 
 > **Access note:** This is a Power BI Service report URL, not a public Publish to web embed link. Viewers may need to sign in to Power BI and have permission to access the report. For unrestricted recruiter access, the report owner must enable **Publish to web** (if permitted by their account/organisation) and replace this link with the generated public URL.
 
-A PDF export and the editable `.pbix` report should also be provided in the repository's `dashboard/` folder so visitors can inspect or download the report if they cannot access the live version.
+A PDF export, page previews and editable `.pbix` report are provided in the [`dashboard/`](dashboard/) folder. The PDF is the easiest way to inspect all three pages without Power BI access.
 
 ## Project overview
 
@@ -142,7 +142,7 @@ After creating the staging table `fact_transactions` from the cleaned CSV, run t
 1. `sql/01_create_dimensions.sql`
 2. `sql/02_populate_dimensions.sql`
 3. `sql/03_create_fact_sales.sql`
-4. `sql/04_reconciliation.sql)
+4. `sql/04_reconciliation.sql`
 
 See [the SQL workflow guide](sql/README.md) for prerequisites and validation expectations.
 
