@@ -1,0 +1,24 @@
+# Local data and database files
+data/raw/
+data/processed/
+data/exports/
+*.db
+*.sqlite
+*.sqlite3
+
+# Power BI temporary/backup files
+*.pbix~ 
+*.pbit~
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
