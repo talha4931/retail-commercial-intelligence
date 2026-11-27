@@ -8,6 +8,20 @@ Is the retailer generating durable revenue, or is reported performance vulnerabl
 
 The project treats revenue growth as only one part of commercial performance. It examines the customers, orders, products, markets and operational patterns that sit underneath reported sales.
 
+## Explore the dashboard
+
+**[Open the Power BI report](https://app.powerbi.com/groups/me/reports/a83615fd-347e-43cf-8a66-79ac70156f6d/61b6bb91056861a56a87?experience=power-bi)**
+
+The report contains three pages:
+
+1. Executive Overview
+2. Customer & Product Performance
+3. Markets & Operational Performance
+
+> **Access note:** This is a Power BI Service report URL, not a public Publish to web embed link. Viewers may need to sign in to Power BI and have permission to access the report. For unrestricted recruiter access, the report owner must enable **Publish to web** (if permitted by their account/organisation) and replace this link with the generated public URL.
+
+A PDF export and the editable `.pbix` report should also be provided in the repository's `dashboard/` folder so visitors can inspect or download the report if they cannot access the live version.
+
 ## Project overview
 
 This project uses the **Online Retail II** dataset from the UCI Machine Learning Repository. It contains transactions from a UK-registered, non-store online retailer between December 2009 and December 2011.
