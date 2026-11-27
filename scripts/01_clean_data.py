@@ -74,7 +74,7 @@ def validate_and_standardise(df: pd.DataFrame) -> pd.DataFrame:
     df["description"] = (
         df["description"].astype("string")
         .str.strip()
-        .str.replace(r"\\s+", " ", regex=True)
+        .str.replace(r"\s+", " ", regex=True)
     )
     df["quantity"] = pd.to_numeric(df["quantity"], errors="coerce")
     df["price"] = pd.to_numeric(df["price"], errors="coerce")
