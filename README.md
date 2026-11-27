@@ -1,99 +1,162 @@
 # Retail Commercial Intelligence
 
-An end-to-end commercial analytics project using the UCI Online Retail II dataset, SQLite and Power BI. The project examines whether reported revenue is supported by durable customer behaviour, diversified product demand and sustainable market performance.
+**A transaction-level retail analytics project using Python, SQLite and Power BI.**
 
 ## Business question
 
-**Is the retailer generating durable revenue, or is reported performance vulnerable to customer concentration, weak repeat purchasing, product dependence and cancellations?**
+Is the retailer generating durable revenue, or is reported performance vulnerable to customer concentration, weak repeat purchasing, product dependence and cancellations?
 
-The analysis is designed around commercial decisions rather than dashboard metrics alone. It investigates revenue trends, order behaviour, customer retention and concentration, product performance, geographic exposure and cancellations.
+The project treats revenue growth as only one part of commercial performance. It examines the customers, orders, products, markets and operational patterns that sit underneath reported sales.
 
-## Dashboard
+## Project overview
 
-The Power BI report is organised into three pages:
+This project uses the **Online Retail II** dataset from the UCI Machine Learning Repository. It contains transactions from a UK-registered, non-store online retailer between December 2009 and December 2011.
 
-1. **Executive Overview** — revenue, orders, units, average order value, identified customers, cancellation value, monthly trends and country contribution.
-2. **Customer & Product Performance** — new versus returning customer revenue, customer segments, product rankings and customer revenue concentration.
-3. **Markets & Operational Performance** — monthly sales, international revenue, cancellation value by country and weekday sales patterns.
+The workflow is designed to be reproducible:
 
-The final Power BI report (.pbix), PDF export and page screenshots will be added to the dashboard/ directory.
+1. **Python — data preparation:** standardise fields, audit exact duplicates, resolve unambiguous missing descriptions, classify transaction types and export quality checks.
+2. **SQLite — data modelling:** load the cleaned transaction data into a staging table, create a star schema and validate the analytical fact table.
+3. **SQL — commercial analysis:** investigate revenue trends, customer behaviour, product and order concentration, geography and cancellations.
+4. **Power BI — reporting:** communicate the commercial findings through an executive overview and supporting customer, product, market and operational views.
 
-## Data source
+## Main commercial findings
 
-- **Dataset:** [Online Retail II — UCI Machine Learning Repository](https://archive.ics.uci.edu/dataset/502/online+retail+ii)
-- **Publisher:** UCI Machine Learning Repository
-- **Coverage:** December 2009 to 9 December 2011
-- **Business context:** UK-based, non-store online retailer
-- **Licence:** CC BY 4.0
+- Total sales revenue is **£20.48m** across **40,077 orders**, with an average order value of **£510.92**.
+- November 2011 new-customer revenue was **53.3% lower year on year**, while returning-customer revenue was **6.0% higher**.
+- The project's rule-based segmentation identified **449 high-value inactive customers** with at least five orders, at least £1,000 historical revenue and no purchase for at least 91 days. Their historic revenue was approximately **£1.76m**; this is not a forecast of recoverable revenue.
+- The top 100 identifiable customers account for **37.55% of identifiable-customer revenue**.
+- The UK accounts for **85.51% of merchandise revenue**. International growth is uneven and, in some markets, highly concentrated among a small number of customers.
+- Cancellation value is approximately **£1.46m**, but includes unusual bulk and non-merchandise adjustments. It should not be read as a confirmed lost-sales rate.
 
-The original workbook contains two worksheets. The source data is not redistributed in this repository. Download it from the UCI source above and follow the preparation instructions in the project documentation.
+More detail and caveats are in [the commercial findings](docs/commercial_findings.md).
 
 ## Technology
 
-- Python — source data preparation and quality auditing
-- SQLite — relational data storage, transformations and analytical queries
-- SQL — data validation and commercial analysis
-- Power BI Desktop — data model, DAX measures and interactive reporting
-
-## Analytical workflow
-
-1. **Extract and standardise** the two source worksheets; standardise field names and data types.
-2. **Audit duplicates and overlap** across worksheets, retaining the appropriate source copy and preserving row-level traceability.
-3. **Recover descriptions conservatively** only where a stock code has one unambiguous description; retain unresolved missing values.
-4. **Classify transaction records** into sales, cancellations, bad-debt adjustments and other non-standard transaction types. Keep diagnostic flags separate from the mutually exclusive primary classification.
-5. **Build the analytical model** in SQLite using a sales fact table and date, customer, product, country and transaction-type dimensions.
-6. **Analyse commercial performance** across revenue, orders, customer behaviour, products, geography and cancellations.
-7. **Build the Power BI report** using a star-schema model, DAX measures and a consistent visual theme.
-
-Detailed scripts and documentation will be maintained in sql/ and documentation/.
-
-## Metric definitions and interpretation
-
-- **Sales revenue** is based on records classified as sales; cancellations and bad-debt adjustments are analysed separately.
-- **Average order value (AOV)** is sales revenue divided by distinct sales invoices.
-- **Identified customers** excludes transactions without a customer ID.
-- **Cancellation value** is shown as an operational measure and should not be interpreted as confirmed lost profit.
-- Customer segments are rule-based analytical groupings defined for this project, not externally validated industry standards.
-
-## Important limitations
-
-- The dataset contains no product cost data; this project does not calculate gross margin or profitability.
-- Missing customer IDs mean some sales cannot be attributed to identified customers.
-- The dataset ends on 9 December 2011; December 2011 is a partial month and should not be compared directly with complete months.
-- Customer inactivity and cohort measures describe observed behaviour within the available period; they do not establish why a customer stopped purchasing.
-- Descriptive patterns are not causal evidence. Market growth does not, by itself, establish the return on additional investment.
-- Cancellation values can include unusual operational adjustments and bulk transactions; they require context before being interpreted as product or service failures.
+- Python: pandas, NumPy, openpyxl
+- Database: SQLite
+- SQL: dimensional modelling, joins, aggregation and validation
+- Visualisation: Microsoft Power BI
 
 ## Repository structure
 
-~~~text
+```text
 retail-commercial-intelligence/
-├── README.md
-├── .gitignore
 ├── data/
-│   └── README.md
-├── dashboard/
-│   ├── screenshots/
-│   └── README.md
+│   ├── raw/                 # Place the source workbook here (not committed)
+│   └── processed/           # Generated cleaned data (not committed)
+├── docs/
+│   ├── commercial_findings.md
+│   └── data_dictionary.md
+├── outputs/                 # Generated audit files (not committed)
+├── powerbi/                 # Power BI report and guidance
+├── scripts/
+│   └── 01_clean_data.py
 ├── sql/
+│   ├── 01_create_dimensions.sql
+│   ├── 02_populate_dimensions.sql
+│   ├── 03_create_fact_sales.sql
+│   ├── 04_reconciliation.sql
 │   └── README.md
-└── documentation/
-    └── README.md
-~~~
+├── .gitignore
+└── requirements.txt
+```
 
-## Reproducing the project
+## Run the Python cleaning pipeline
 
-1. Download the Online Retail II workbook from the UCI Machine Learning Repository.
-2. Review the data preparation instructions and scripts in this repository.
-3. Run the preparation workflow to create the cleaned transaction file.
-4. Create and populate the SQLite database using the SQL scripts.
-5. Export the analytical tables for Power BI if using the CSV-import workflow.
-6. Open the Power BI report in Power BI Desktop and refresh it against the prepared data.
+### 1. Clone the repository
 
-Exact commands, expected outputs and validation checks will be documented alongside the scripts.
+```bash
+git clone https://github.com/talha4931/retail-commercial-intelligence.git
+cd retail-commercial-intelligence
+```
 
-## Licence and attribution
+### 2. Create and activate a virtual environment
 
-The Online Retail II dataset is provided by the UCI Machine Learning Repository under **CC BY 4.0**. Please refer to the [dataset page](https://archive.ics.uci.edu/dataset/502/online+retail+ii) for the original data and attribution details.
+macOS / Linux:
 
-Unless otherwise stated in individual files, the original dataset remains subject to its source licence. Project code and documentation are provided under the repository licence once one is added.
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+```
+
+Windows PowerShell:
+
+```powershell
+py -m venv .venv
+.venv\Scripts\Activate.ps1
+```
+
+### 3. Install dependencies
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+### 4. Obtain the source dataset
+
+Download **Online Retail II** from the [UCI Machine Learning Repository](https://archive.ics.uci.edu/dataset/502/online+retail+ii).
+
+Place the workbook at:
+
+```text
+data/raw/online_retail_II.xlsx
+```
+
+The source data is not included in this repository. The dataset is provided by UCI under **CC BY 4.0**; retain appropriate attribution when reusing it.
+
+### 5. Run the cleaning pipeline
+
+```bash
+python scripts/01_clean_data.py
+```
+
+The script writes:
+
+- `data/processed/retail_transactions_clean.csv`
+- `outputs/data_quality/data_quality_audit.csv`
+- `outputs/data_quality/duplicate_audit.csv`
+- `outputs/data_quality/description_recovery_audit.csv`
+- `outputs/data_quality/transaction_classification_summary.csv`
+- `outputs/data_quality/description_classification_summary.csv`
+
+These generated files are excluded from version control.
+
+## SQLite workflow
+
+After creating the staging table `fact_transactions` from the cleaned CSV, run the SQL scripts in order:
+
+1. `sql/01_create_dimensions.sql`
+2. `sql/02_populate_dimensions.sql`
+3. `sql/03_create_fact_sales.sql`
+4. `sql/04_reconciliation.sql)
+
+See [the SQL workflow guide](sql/README.md) for prerequisites and validation expectations.
+
+## Data model
+
+The analytical model is a star schema with one transaction-line fact table and five dimensions:
+
+- `fact_sales`
+- `dim_date`
+- `dim_customer`
+- `dim_product`
+- `dim_country`
+- `dim_transaction_type`
+
+See [the data dictionary](docs/data_dictionary.md) for field definitions and classification rules.
+
+## Analytical scope and limitations
+
+The project analyses sales revenue, order behaviour, customer activity, product concentration, geography and cancellations. It does **not** calculate profit or gross margin because product cost data is not available.
+
+Other limitations:
+- Some transactions have no customer identifier. They remain in overall sales but are excluded from identified-customer measures.
+- Cancellation value includes non-merchandise and unusual bulk adjustments.
+- Customer segments use project-defined thresholds, not industry standards.
+- The final month, December 2011, is partial and ends on 9 December.
+- The dataset does not provide marketing spend, acquisition channels, inventory availability or cancellation reasons. Causal conclusions and investment-return claims are therefore outside scope.
+
+## Author
+
+Talha Hassan Saleem
+
