@@ -20,7 +20,7 @@ The report contains three pages:
 
 > **Access note:** This is a Power BI Service report URL, not a public Publish to web embed link. Viewers may need to sign in to Power BI and have permission to access the report. For unrestricted recruiter access, the report owner must enable **Publish to web** (if permitted by their account/organisation) and replace this link with the generated public URL.
 
-A PDF export, page previews and editable `.pbix` report are provided in the [`dashboard/`](dashboard/) folder. The PDF is the easiest way to inspect all three pages without Power BI access.
+The PDF export, page previews and editable `.pbix` report are intended to sit in the [`dashboard/`](dashboard/) folder. The PDF is the easiest way to inspect all three pages without Power BI access. See [dashboard asset instructions](dashboard/README.md).
 
 ## Project overview
 
@@ -58,6 +58,9 @@ retail-commercial-intelligence/
 ├── data/
 │   ├── raw/                 # Place the source workbook here (not committed)
 │   └── processed/           # Generated cleaned data (not committed)
+├── dashboard/
+│   ├── README.md
+│   └── screenshots/           # Dashboard page previews
 ├── docs/
 │   ├── commercial_findings.md
 │   └── data_dictionary.md
